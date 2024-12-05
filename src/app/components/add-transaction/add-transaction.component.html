@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>
+  @if(data.transaction){
+    Edit transaction
+  }
+  @else {
+    Create transaction
+  }
+</h2>
+<form [formGroup]="form">
+  <mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Name *</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="form.controls.name.touched && form.controls.name.invalid">
+          <span *ngIf="form.controls.name.errors?.required">This field is mandatory.</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Amount *</mat-label>
+        <input matInput formControlName="amount">
+        <mat-error *ngIf="form.controls.amount.touched && form.controls.amount.invalid">
+          <span *ngIf="form.controls.amount.errors?.pattern">This field must be in currency format(123.34).</span>
+          <span *ngIf="form.controls.amount.errors?.required">This field is mandatory.</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type" >
+          @for (type of types; track type) {
+            <mat-option [value]="type">{{typesEnum[type]}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" >
+          @for (category of categories; track category) {
+            <mat-option [value]="category">{{categoryEnum[category]}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="dp" formControlName="date" (focus)="dp?.open()">
+        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp>
+        </mat-datepicker>
+      </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="saveTransaction()">Ok</button>
+  </mat-dialog-actions>
+ </form>
